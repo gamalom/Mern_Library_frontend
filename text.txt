@@ -1,0 +1,89 @@
+import React, { useState, useEffect } from 'react';
+import NavBar from './components/NavBar';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+
+const EditBook = () => {
+  const { id } = useParams();
+  const [book, setBook] = useState({
+    bookName: '',
+    bookPrice: null,
+    authorName: '',
+    isbnNumber: null,
+    publication: '',
+    publishedAt: '',
+    image: null,
+  });
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      const response = await axios.get(`http://localhost:4000/book/${id}`);
+      if (response.status === 200) {
+        setBook(response.data.data);
+      } else {
+        console.error('Error fetching book:', response.statusText);
+      }
+    };
+
+    fetchBook();
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setBook({
+      ...book,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await axios.put(`http://localhost:4000/book/${id}`, book);
+    console.log('Book updated successfully:', response.data);
+  };
+
+  return (
+    <>
+      <NavBar />
+      <div className="flex flex-col items-center justify-center mt-9">
+        <div className="max-w-sm rounded overflow-hidden shadow-lg mb-1">
+          <form className="p-6 space-y-4" onSubmit={handleSubmit}>
+            <h1 className="text-xl font-bold mb-2">Edit Book</h1>
+            <div>
+              <label htmlFor="bookName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Book Name</label>
+              <input type="text" name="bookName" value={book.bookName} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Book Name" required />
+            </div>
+            <div>
+              <label htmlFor="bookPrice" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Price</label>
+              <input type="number" name="bookPrice" value={book.bookPrice} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Price" required />
+            </div>
+            <div>
+              <label htmlFor="authorName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Author Name</label>
+              <input type="text" name="authorName" value={book.authorName} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Author Name" required />
+            </div>
+            <div>
+              <label htmlFor="isbnNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">ISBN Number</label>
+              <input type="number" name="isbnNumber" value={book.isbnNumber} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="ISBN Number" required />
+            </div>
+            <div>
+              <label htmlFor="publication" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Publication</label>
+              <input type="text" name="publication" value={book.publication} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Publication" required />
+            </div>
+            <div>
+              <label htmlFor="publishedAt" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Published Date</label>
+              <input type="date" name="publishedAt" value={book.publishedAt} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Published Date" required />
+            </div>
+            <div>
+              <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Image</label>
+              <input type="file" name="image" onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required />
+            </div>
+            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default EditBook;
