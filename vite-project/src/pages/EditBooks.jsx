@@ -36,7 +36,7 @@ const EditBook = () => {
     });
     formData.append('image', image);
 
-    const response = await axios.patch(`http://localhost:4000/book/${id}`, formData);
+    const response = await axios.patch(`https://mern-library-backend-sunil.onrender.com/book/${id}`, formData);
     if (response.status === 200) {
       navigate("/book/" + id);
     } else {
@@ -45,7 +45,7 @@ const EditBook = () => {
   };
 
   const fetchBook = async () => {
-    const response = await axios.get(`http://localhost:4000/book/${id}`);
+    const response = await axios.get(`https://mern-library-backend-sunil.onrender.com/book/${id}`);
     if (response.status === 200) {
       const bookData = response.data.data;
       setData({

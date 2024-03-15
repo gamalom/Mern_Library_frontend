@@ -11,7 +11,7 @@ const DeleteBook = () => {
 
   useEffect(() => {
     const fetchBook = async () => {
-      const response = await axios.get(`http://localhost:4000/book/${id}`);
+      const response = await axios.get(`https://mern-library-backend-sunil.onrender.com/book/${id}`);
       if (response.status === 200) {
         setBook(response.data.data);
       }
@@ -21,7 +21,7 @@ const DeleteBook = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    const response = await axios.delete(`http://localhost:4000/book/${id}`);
+    const response = await axios.delete(`https://mern-library-backend-sunil.onrender.com/book/${id}`);
     if (response.status === 200) {
       navigate('/'); 
     } else {
